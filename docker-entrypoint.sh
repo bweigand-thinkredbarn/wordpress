@@ -178,6 +178,12 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 }
 
 EOPHP
+			# leaving wp-config-sample open can break some plugins
+			# and can prevent some docker configs like linking between
+			# container storage before build
+			close('wp-config-sample.php') >> log.txt
+			#
+			#
 			chown "$user:$group" wp-config.php
 		elif [ -e wp-config.php ] && [ -n "$WORDPRESS_CONFIG_EXTRA" ] && [[ "$(< wp-config.php)" != *"$WORDPRESS_CONFIG_EXTRA"* ]]; then
 			# (if the config file already contains the requested PHP code, don't print a warning)
